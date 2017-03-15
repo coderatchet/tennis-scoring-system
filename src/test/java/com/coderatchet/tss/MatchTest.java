@@ -9,6 +9,7 @@ import java.util.*;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by jared on 15/03/17.
@@ -249,5 +250,45 @@ public class MatchTest {
         assertEquals(P2, match.getWinner());
     }
 
+
+    @Test
+    public void testP1DoesNotWinWhenPointDifferenceLessThan2() {
+
+        // 5 wins
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+
+        // 6 wins
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        assertNull(match.getWinner());
+    }
+
+
+    @Test
+    public void testP2DoesNotWinWhenPointDifferenceLessThan2() {
+        // 5 wins
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+
+        // 6 wins
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        assertNull(match.getWinner());
+    }
 
 }
