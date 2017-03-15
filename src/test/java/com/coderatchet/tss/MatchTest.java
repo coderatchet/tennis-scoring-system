@@ -159,4 +159,14 @@ public class MatchTest {
         assertEquals(0, match.getP2GamesWon());
     }
 
+    @Test
+    public void testDeuceScoreShowsCorrectly() {
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        assertEquals("Deuce", match.getGameScore());
+    }
 }

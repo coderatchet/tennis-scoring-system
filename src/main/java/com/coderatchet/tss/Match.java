@@ -94,8 +94,8 @@ public class Match {
     }
 
     String getGameScore() {
-        if (p1GamePoints >= 4 || p2GamePoints >= 4) {
-            throw new NotImplementedException();
+        if (p1GamePoints >= 3 && p2GamePoints >= 3) {
+            return "Deuce";
         } else {
             return String.format("%s-%s",
                     pointConversionMap.get(p1GamePoints),
