@@ -95,6 +95,9 @@ public class Match {
 
     String getGameScore() {
         if (p1GamePoints >= 3 && p2GamePoints >= 3) {
+            if (p1GamePoints > p2GamePoints) {
+                return "Advantage " + p1Name;
+            }
             return "Deuce";
         } else {
             return String.format("%s-%s",
