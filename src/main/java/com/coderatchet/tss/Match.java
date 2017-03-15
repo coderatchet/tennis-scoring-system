@@ -47,7 +47,7 @@ public class Match {
             }
         } else if (playerName.equals(getP2Name())) {
             p2GamePoints++;
-            if (p2GamePoints >= 4) {
+            if (p2GamePoints >= 4 && p2GamePoints - p1GamePoints >= 2) {
                 p2GamesWon++;
                 resetScore();
             }

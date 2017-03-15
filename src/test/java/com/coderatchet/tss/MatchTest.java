@@ -51,7 +51,7 @@ public class MatchTest {
         assertEquals("0-0", match.getSetScore());
     }
 
-    private class ScoreSet implements Comparable<ScoreSet>{
+    private class ScoreSet implements Comparable<ScoreSet> {
         private Integer p1;
         private Integer p2;
 
@@ -112,7 +112,7 @@ public class MatchTest {
 
 
     @Test
-    public void testWinningConditions1(){
+    public void testWinningConditions1() {
         match.pointWonBy(P1);
         match.pointWonBy(P1);
         match.pointWonBy(P1);
@@ -123,7 +123,7 @@ public class MatchTest {
     }
 
     @Test
-    public void testWinningConditions2(){
+    public void testWinningConditions2() {
         match.pointWonBy(P2);
         match.pointWonBy(P2);
         match.pointWonBy(P2);
@@ -134,7 +134,7 @@ public class MatchTest {
     }
 
     @Test
-    public void testMatchNotWonWhenDifferenceLessThan2() {
+    public void testP1DidNotWinWhenDifferenceLessThan2() {
         match.pointWonBy(P2);
         match.pointWonBy(P2);
         match.pointWonBy(P2);
@@ -142,6 +142,19 @@ public class MatchTest {
         match.pointWonBy(P1);
         match.pointWonBy(P1);
         match.pointWonBy(P1);
+        assertEquals(0, match.getP1GamesWon());
+        assertEquals(0, match.getP2GamesWon());
+    }
+
+    @Test
+    public void testP2DidNotWinWhenDifferenceLessThan2() {
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
         assertEquals(0, match.getP1GamesWon());
         assertEquals(0, match.getP2GamesWon());
     }
