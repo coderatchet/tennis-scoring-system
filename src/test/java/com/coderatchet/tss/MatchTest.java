@@ -22,7 +22,7 @@ public class MatchTest {
     public void setUpStreams(){
         System.setOut(new PrintStream(outContent));
         System.setErr(new PrintStream(errContent));
-        match = new Match("phil", "bob");
+        match = new Match("p1", "p2");
     }
 
     @Test
@@ -46,5 +46,11 @@ public class MatchTest {
     @Test
     public void testNewGameSetScoreIsCorrect() {
         assertEquals("0-0", match.getSetScore());
+    }
+
+    @Test
+    public void testNewGamePlayer1Scores1Point(){
+        match.pointWonBy("p1");
+        assertEquals("15-0", match.getGameScore());
     }
 }
