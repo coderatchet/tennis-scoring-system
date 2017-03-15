@@ -118,5 +118,6 @@ public class MatchTest {
         match.pointWonBy(P1);
         match.pointWonBy(P1);
         assertEquals(1, match.getP1GamesWon());
+        assertEquals("0-0", match.getGameScore());
     }
 }

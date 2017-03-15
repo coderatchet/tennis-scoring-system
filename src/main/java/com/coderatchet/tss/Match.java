@@ -39,6 +39,8 @@ public class Match {
             this.p1GamePoints++;
             if (this.p1GamePoints >= 4) {
                 this.p1GamesWon++;
+                this.p1GamePoints = 0;
+                this.p2GamePoints = 0;
             }
         } else if (playerName.equals(this.getP2Name())) {
             this.p2GamePoints++;
