@@ -227,5 +227,27 @@ public class MatchTest {
         }
     }
 
+    @Test
+    public void testP1WinsIfPoints6WithGT1Diff() {
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        assertEquals(P1, match.getWinner());
+    }
+
+    @Test
+    public void testP2WinsIfPoints6WithGT1Diff() {
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        assertEquals(P2, match.getWinner());
+    }
+
 
 }

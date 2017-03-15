@@ -2,6 +2,7 @@ package com.coderatchet.tss;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.lang.model.type.UnionType;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -106,6 +107,13 @@ public class Match {
                     pointConversionMap.get(p1GamePoints),
                     pointConversionMap.get(p2GamePoints));
         }
+    }
+
+    String getWinner() {
+        if ((p1GamesWon >= 6 && p1GamesWon - p2GamesWon >= 2) ||
+                (p2GamesWon >= 6 && p2GamesWon - p1GamesWon >= 2)){
+            return p1GamesWon > p2GamesWon ? p1Name : p2Name;
+        } else return null;
     }
 
     String getSetScore() {
