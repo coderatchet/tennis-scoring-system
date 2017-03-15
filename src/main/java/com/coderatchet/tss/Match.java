@@ -97,6 +97,8 @@ public class Match {
         if (p1GamePoints >= 3 && p2GamePoints >= 3) {
             if (p1GamePoints > p2GamePoints) {
                 return "Advantage " + p1Name;
+            } else if (p2GamePoints > p1GamePoints) {
+                return "Advantage " + p2Name;
             }
             return "Deuce";
         } else {

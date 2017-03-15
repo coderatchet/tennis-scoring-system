@@ -182,4 +182,17 @@ public class MatchTest {
         match.pointWonBy(P1);
         assertEquals("Advantage " + P1, match.getGameScore());
     }
+
+
+    @Test
+    public void testAdvantageP2ScoreShowsCorrectly() {
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        assertEquals("Advantage " + P2, match.getGameScore());
+    }
 }
