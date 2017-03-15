@@ -11,8 +11,8 @@ public class Match {
     private String p2Name;
     private int p1GamesWon = 0;
     private int p2GamesWon = 0;
-    private int p1GameScore = 0;
-    private int p2GameScore = 0;
+    private int p1GamePoints = 0;
+    private int p2GamePoints = 0;
     private int currentGame = 1;
 
     public Match(String player1Name, String player2Name) {
@@ -44,15 +44,19 @@ public class Match {
         return p2GamesWon;
     }
 
-    public int getP1GameScore() {
-        return p1GameScore;
+    public int getP1GamePoints() {
+        return p1GamePoints;
     }
 
-    public int getP2GameScore() {
-        return p2GameScore;
+    public int getP2GamePoints() {
+        return p2GamePoints;
     }
 
     public int getCurrentGame() {
         return currentGame;
+    }
+
+    public String getGameScore() {
+        return "0-0";
     }
 }
