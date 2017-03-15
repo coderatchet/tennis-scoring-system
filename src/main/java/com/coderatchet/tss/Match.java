@@ -35,18 +35,26 @@ public class Match {
      */
     void pointWonBy(String playerName) {
         // no null tests, correct content assumed
-        if (playerName.equals(this.getP1Name())) {
-            this.p1GamePoints++;
-            if (this.p1GamePoints >= 4) {
-                this.p1GamesWon++;
-                this.p1GamePoints = 0;
-                this.p2GamePoints = 0;
+        if (playerName.equals(getP1Name())) {
+            p1GamePoints++;
+            if (p1GamePoints >= 4) {
+                p1GamesWon++;
+                resetScore();
             }
-        } else if (playerName.equals(this.getP2Name())) {
-            this.p2GamePoints++;
+        } else if (playerName.equals(getP2Name())) {
+            p2GamePoints++;
+            if (p2GamePoints >= 4) {
+                p2GamesWon++;
+                resetScore();
+            }
         } else {
             throw new RuntimeException(String.format("Player '%s' does not exist.", playerName));
         }
+    }
+
+    private void resetScore() {
+        p1GamePoints = 0;
+        p2GamePoints = 0;
     }
 
     public void score() {
@@ -82,12 +90,12 @@ public class Match {
     }
 
     String getGameScore() {
-        if (this.p1GamePoints >= 4 || this.p2GamePoints >= 4) {
+        if (p1GamePoints >= 4 || p2GamePoints >= 4) {
             throw new NotImplementedException();
         } else {
             return String.format("%s-%s",
-                    this.pointConversionMap.get(this.p1GamePoints),
-                    this.pointConversionMap.get(this.p2GamePoints));
+                    pointConversionMap.get(p1GamePoints),
+                    pointConversionMap.get(p2GamePoints));
         }
     }
 
