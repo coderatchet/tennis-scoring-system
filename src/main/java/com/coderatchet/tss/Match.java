@@ -109,6 +109,6 @@ public class Match {
     }
 
     String getSetScore() {
-        return "0-0";
+        return String.format("%s-%s", getP1GamesWon(), getP2GamesWon());
     }
 }

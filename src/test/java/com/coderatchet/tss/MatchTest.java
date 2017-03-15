@@ -92,7 +92,6 @@ public class MatchTest {
         expectedScore.put(new ScoreSet(3, 0), "40-0");
         expectedScore.put(new ScoreSet(3, 1), "40-15");
         expectedScore.put(new ScoreSet(3, 2), "40-30");
-//        expectedScore.put(new ScoreSet(3, 3), "Deuce");
 
         for (Map.Entry<ScoreSet, String> entry : expectedScore.entrySet()) {
             testExpectedOutput(entry);
@@ -195,4 +194,38 @@ public class MatchTest {
         match.pointWonBy(P2);
         assertEquals("Advantage " + P2, match.getGameScore());
     }
+
+    private void simulateGameWinP1(Match m) {
+        m.pointWonBy(P1);
+        m.pointWonBy(P1);
+        m.pointWonBy(P1);
+        m.pointWonBy(P1);
+    }
+
+    private void simulateGameWinP2(Match m) {
+        m.pointWonBy(P2);
+        m.pointWonBy(P2);
+        m.pointWonBy(P2);
+        m.pointWonBy(P2);
+    }
+
+    /**
+     * Exhaustively test the first few wins of games score. starting from non zero score.
+     */
+
+    @Test
+    public void testSetScore() {
+        for (int i = 0; i < 6; i++) {
+            Match m = new Match(P1, P2);
+            for (int k = 0; k < i; k++) {
+                simulateGameWinP1(m);
+            }
+            for (int j = 0; j < 6; j++) {
+                simulateGameWinP2(m);
+                assertEquals(String.format("%s-%s", i, j+1), m.getSetScore());
+            }
+        }
+    }
+
+
 }
