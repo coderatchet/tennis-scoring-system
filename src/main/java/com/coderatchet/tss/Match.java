@@ -30,14 +30,18 @@ public class Match {
     }
 
     /**
-     *  ForWe are assuming the players will obey game restarting rules when a game is won and
+     * For this demo, We are assuming the players will obey game restarting rules when a game is won and the next point
+     * applies to the next game.
+     *
      * @param playerName player who scored
      */
     void pointWonBy(String playerName) {
         // no null tests, correct content assumed
         if (playerName.equals(getP1Name())) {
             p1GamePoints++;
-            if (p1GamePoints >= 4) {
+
+            // winning means at least 4 points and difference of at least 2
+            if (p1GamePoints >= 4 && p1GamePoints - p2GamePoints >= 2) {
                 p1GamesWon++;
                 resetScore();
             }

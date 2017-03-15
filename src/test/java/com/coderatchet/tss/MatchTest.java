@@ -132,4 +132,18 @@ public class MatchTest {
         assertEquals(0, match.getP1GamesWon());
         assertEquals("0-0", match.getGameScore());
     }
+
+    @Test
+    public void testMatchNotWonWhenDifferenceLessThan2() {
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        assertEquals(0, match.getP1GamesWon());
+        assertEquals(0, match.getP2GamesWon());
+    }
+
 }
