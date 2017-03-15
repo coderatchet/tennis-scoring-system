@@ -109,4 +109,14 @@ public class MatchTest {
         }
         assertEquals(entry.getValue(), m.getGameScore());
     }
+
+
+    @Test
+    public void testWinningConditions1(){
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        assertEquals(1, match.getP1GamesWon());
+    }
 }
