@@ -59,4 +59,8 @@ public class Match {
     public String getGameScore() {
         return "0-0";
     }
+
+    public String getSetScore() {
+        return "0-0";
+    }
 }

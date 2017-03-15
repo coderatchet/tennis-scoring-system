@@ -14,14 +14,15 @@ import static org.junit.Assert.assertEquals;
  */
 public class MatchTest {
 
-
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+    private Match match = null;
 
     @Before
     public void setUpStreams(){
         System.setOut(new PrintStream(outContent));
         System.setErr(new PrintStream(errContent));
+        match = new Match("phil", "bob");
     }
 
     @Test
@@ -39,7 +40,11 @@ public class MatchTest {
 
     @Test
     public void testNewGameScoreIsCorrect() {
-        Match match = new Match("phil", "bill");
         assertEquals("0-0", match.getGameScore());
+    }
+
+    @Test
+    public void testNewGameSetScoreIsCorrect() {
+        assertEquals("0-0", match.getSetScore());
     }
 }
