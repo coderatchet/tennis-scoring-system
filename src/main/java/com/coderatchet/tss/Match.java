@@ -29,12 +29,16 @@ public class Match {
         pointConversionMap.put(3, "40");
     }
 
+    /**
+     *  ForWe are assuming the players will obey game restarting rules when a game is won and
+     * @param playerName player who scored
+     */
     void pointWonBy(String playerName) {
         // no null tests, correct content assumed
         if (playerName.equals(this.getP1Name())) {
             this.p1GamePoints++;
         } else if (playerName.equals(this.getP2Name())) {
-            throw new NotImplementedException();
+            this.p2GamePoints++;
         } else {
             throw new RuntimeException(String.format("Player '%s' does not exist.", playerName));
         }
