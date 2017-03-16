@@ -195,18 +195,31 @@ public class MatchTest {
         assertEquals("Advantage " + P2, match.getGameScore());
     }
 
-    private void simulateGameWinP1(Match m) {
-        m.pointWonBy(P1);
-        m.pointWonBy(P1);
-        m.pointWonBy(P1);
-        m.pointWonBy(P1);
+    private void simulateTieBreak(Match m) {
+        // 5 Wins P1
+        simulateGameWin(m, P1, 5);
+
+        // 6 Wins P2
+        simulateGameWin(m, P2, 6);
+
+        // Tie Break win P1
+        simulateGameWin(m, P1, 1);
+
+
     }
 
-    private void simulateGameWinP2(Match m) {
-        m.pointWonBy(P2);
-        m.pointWonBy(P2);
-        m.pointWonBy(P2);
-        m.pointWonBy(P2);
+    private void simulateGameWin(Match m, String player, int num) {
+        for (int i = 0; i < num; i++) {
+            int pointsToWin;
+            if (m.getP1GamesWon() == 6 && m.getP2GamesWon() == 6) {
+                pointsToWin = 7;
+            } else {
+                pointsToWin = 4;
+            }
+            for (int j = 0; j < pointsToWin; j++) {
+                m.pointWonBy(player);
+            }
+        }
     }
 
     /**
@@ -217,11 +230,9 @@ public class MatchTest {
     public void testSetScore() {
         for (int i = 0; i < 6; i++) {
             Match m = new Match(P1, P2);
-            for (int k = 0; k < i; k++) {
-                simulateGameWinP1(m);
-            }
+            simulateGameWin(m, P1, i);
             for (int j = 0; j < 6; j++) {
-                simulateGameWinP2(m);
+                simulateGameWin(m, P2, 1);
                 assertEquals(String.format("%s-%s", i, j + 1), m.getSetScore());
             }
         }
@@ -229,46 +240,35 @@ public class MatchTest {
 
     @Test
     public void testP1WinsIfPoints6WithGT1Diff() {
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
+        simulateGameWin(match, P1, 5);
+        simulateGameWin(match, P2, 4);
+        simulateGameWin(match, P1, 1);
         assertEquals(P1, match.getWinner());
+        assertEquals("Congratulations to " + P1+ " for winning! Final score: 6-4\n", outContent.toString());
     }
 
     @Test
     public void testP2WinsIfPoints6WithGT1Diff() {
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
+        simulateGameWin(match, P2, 5);
+        simulateGameWin(match, P1, 4);
+        simulateGameWin(match, P2, 1);
         assertEquals(P2, match.getWinner());
+        assertEquals("Congratulations to " + P2 + " for winning! Final score: 4-6\n", outContent.toString());
     }
 
 
     @Test
     public void testP1DoesNotWinWhenPointDifferenceLessThan2() {
 
-        // 5 wins
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
+        // 5 wins P2
+        simulateGameWin(match, P2, 5);
 
-        // 6 wins
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
+        // 6 wins P1
+        simulateGameWin(match, P1, 6);
         assertNull(match.getWinner());
-        simulateGameWinP1(match);
+
+        // Set Point P1
+        simulateGameWin(match, P1, 1);
         assertEquals(P1, match.getWinner());
     }
 
@@ -276,21 +276,13 @@ public class MatchTest {
     @Test
     public void testP2DoesNotWinWhenPointDifferenceLessThan2() {
         // 5 wins
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
+        simulateGameWin(match, P1, 5);
 
         // 6 wins
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
+        simulateGameWin(match, P2, 6);
         assertNull(match.getWinner());
-        simulateGameWinP2(match);
+
+        simulateGameWin(match, P2, 1);
         assertEquals(P2, match.getWinner());
     }
 
@@ -298,18 +290,8 @@ public class MatchTest {
     public void testTieRulesEntered() {
         for (int i = 0; i < 6; i++) {
             Match m = new Match(P1, P2);
-            simulateGameWinP1(m);
-            simulateGameWinP1(m);
-            simulateGameWinP1(m);
-            simulateGameWinP1(m);
-            simulateGameWinP1(m);
-            simulateGameWinP2(m);
-            simulateGameWinP2(m);
-            simulateGameWinP2(m);
-            simulateGameWinP2(m);
-            simulateGameWinP2(m);
-            simulateGameWinP2(m);
-            simulateGameWinP1(m);
+
+            simulateTieBreak(m);
             assertNull(m.getWinner());
             for (int j = 0; j < i; j++) {
                 m.pointWonBy(P1);
@@ -323,31 +305,24 @@ public class MatchTest {
 
     @Test
     public void testTieBreakNotWonWithDifferenceLessThan2AndPointsMoreThan6P1() {
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP1(match);
+        simulateTieBreak(match);
         assertNull(match.getWinner());
-        match.pointWonBy(P1);
-        match.pointWonBy(P1);
-        match.pointWonBy(P1);
-        match.pointWonBy(P1);
-        match.pointWonBy(P1);
-        match.pointWonBy(P1);
+
+        // 6 points P2
         match.pointWonBy(P2);
         match.pointWonBy(P2);
         match.pointWonBy(P2);
         match.pointWonBy(P2);
         match.pointWonBy(P2);
         match.pointWonBy(P2);
+
+        // 7 points P1
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
         match.pointWonBy(P1);
         assertEquals("7-6", match.getGameScore());
         assertNull(match.getWinner());
@@ -355,94 +330,7 @@ public class MatchTest {
 
     @Test
     public void testTieBreakNotWonWithDifferenceLessThan2AndPointsMoreThan6P2() {
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP1(match);
-        assertNull(match.getWinner());
-        match.pointWonBy(P2);
-        match.pointWonBy(P2);
-        match.pointWonBy(P2);
-        match.pointWonBy(P2);
-        match.pointWonBy(P2);
-        match.pointWonBy(P2);
-        match.pointWonBy(P1);
-        match.pointWonBy(P1);
-        match.pointWonBy(P1);
-        match.pointWonBy(P1);
-        match.pointWonBy(P1);
-        match.pointWonBy(P1);
-        match.pointWonBy(P2);
-        assertEquals("6-7", match.getGameScore());
-        assertNull(match.getWinner());
-    }
-
-    @Test
-    public void testTieBreakerWonWhenMoreThan6PointsAndAtLeast2MoreThanOtherP1(){
-
-        // 5 wins P1
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-
-        // 6 wins P2
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-
-        // 1 win P1 (tie-breaker)
-        simulateGameWinP1(match);
-        assertNull(match.getWinner());
-        match.pointWonBy(P2);
-        match.pointWonBy(P2);
-        match.pointWonBy(P2);
-        match.pointWonBy(P2);
-        match.pointWonBy(P2);
-        match.pointWonBy(P2);
-        match.pointWonBy(P1);
-        match.pointWonBy(P1);
-        match.pointWonBy(P1);
-        match.pointWonBy(P1);
-        match.pointWonBy(P1);
-        match.pointWonBy(P2);
-        assertEquals("6-7", match.getSetScore());
-        assertEquals(P2, match.getWinner());
-        assertEquals("Congratulations to " + P2 + " for winning! Final score: 6-7\n", outContent.toString());
-    }
-
-    @Test
-    public void testTieBreakerWonWhenMoreThan6PointsAndAtLeast2MoreThanOtherP2(){
-
-        // 5 wins P1
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-        simulateGameWinP2(match);
-
-        // 6 wins P2
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-        simulateGameWinP1(match);
-
-        // 1 win P2 (tie-breaker)
-        simulateGameWinP2(match);
+        simulateTieBreak(match);
         assertNull(match.getWinner());
 
         // 6 points P1
@@ -453,18 +341,71 @@ public class MatchTest {
         match.pointWonBy(P1);
         match.pointWonBy(P1);
 
-        // 5 points p2
+        // 7 points P2
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
         match.pointWonBy(P2);
         match.pointWonBy(P2);
         match.pointWonBy(P2);
         match.pointWonBy(P2);
         match.pointWonBy(P2);
 
-        // winning point P1
+        assertEquals("6-7", match.getGameScore());
+        assertNull(match.getWinner());
+    }
+
+    @Test
+    public void testTieBreakerWonWhenMoreThan6PointsAndAtLeast2MoreThanOtherP1() {
+        simulateTieBreak(match);
+        assertNull(match.getWinner());
+
+        // 5 wins P2
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+
+        // 7 wins P1
         match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+
         assertEquals("7-6", match.getSetScore());
         assertEquals(P1, match.getWinner());
         assertEquals("Congratulations to " + P1 + " for winning! Final score: 7-6\n", outContent.toString());
+    }
+
+    @Test
+    public void testTieBreakerWonWhenMoreThan6PointsAndAtLeast2MoreThanOtherP2() {
+
+        simulateTieBreak(match);
+        assertNull(match.getWinner());
+
+
+        // 5 points P1
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+
+        // 7 points P2
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+
+        assertEquals("6-7", match.getSetScore());
+        assertEquals(P2, match.getWinner());
+        assertEquals("Congratulations to " + P2 + " for winning! Final score: 6-7\n", outContent.toString());
     }
 
     @Test

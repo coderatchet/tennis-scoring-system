@@ -1,8 +1,5 @@
 package com.coderatchet.tss;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import javax.lang.model.type.UnionType;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -207,7 +204,7 @@ public class Match {
 
         @Override
         public String getSetWinner() {
-            // since this is the last game, then we can do this simple check.
+            // since this must be the last game, then we can do this simple check.
             if (p1GamesWon == 7 || p2GamesWon == 7) {
                 return p1GamesWon == 7 ? p1Name : p2Name;
             } else {
