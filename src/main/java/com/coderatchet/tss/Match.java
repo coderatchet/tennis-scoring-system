@@ -65,7 +65,7 @@ public class Match {
     }
 
     public void score() {
-        throw new NotImplementedException();
+        System.out.println(getSetScore() + (p1GamePoints == 0 && p2GamePoints == 0 ? "" : ", ") + getGameScore());
     }
 
     String getP1Name() {

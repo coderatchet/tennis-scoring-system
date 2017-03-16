@@ -464,4 +464,17 @@ public class MatchTest {
         assertEquals("7-6", match.getSetScore());
         assertEquals(P1, match.getWinner());
     }
+
+    @Test
+    public void testCanPrintOverallScoreOnNewGame() {
+        match.score();
+        assertEquals("0-0\n", outContent.toString());
+    }
+
+//    @Test
+//    public void testCanPrintOverallScoreOnNewGameWithPoints() {
+//        match.pointWonBy(P1);
+//        match.score();
+//        assertEquals("0-0, 0-1", outContent.toString());
+//    }
 }
