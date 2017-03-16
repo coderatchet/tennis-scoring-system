@@ -97,10 +97,7 @@ public class Match {
     }
 
     String getWinner() {
-        if ((p1GamesWon >= 6 && p1GamesWon - p2GamesWon >= 2) ||
-                (p2GamesWon >= 6 && p2GamesWon - p1GamesWon >= 2)) {
-            return p1GamesWon > p2GamesWon ? p1Name : p2Name;
-        } else return null;
+        return currentGameRules.getSetWinner();
     }
 
     String getSetScore() {
@@ -123,6 +120,13 @@ public class Match {
          * @return String
          */
         String getScore();
+
+        /**
+         * return the ultimate set winner or null if none decided yet
+         *
+         * @return null|String
+         */
+        String getSetWinner();
     }
 
     /**
@@ -160,6 +164,14 @@ public class Match {
                         pointConversionMap.get(p2GamePoints));
             }
         }
+
+        @Override
+        public String getSetWinner() {
+            if ((p1GamesWon >= 6 && p1GamesWon - p2GamesWon >= 2) ||
+                    (p2GamesWon >= 6 && p2GamesWon - p1GamesWon >= 2)) {
+                return p1GamesWon > p2GamesWon ? p1Name : p2Name;
+            } else return null;
+        }
     }
 
     /**
@@ -179,6 +191,16 @@ public class Match {
         @Override
         public String getScore() {
             return String.format("%s-%s", p1GamePoints, p2GamePoints);
+        }
+
+        @Override
+        public String getSetWinner() {
+            // since this is the last game, then we can do this simple check.
+            if (p1GamesWon == 7 || p2GamesWon == 7) {
+                return p1GamesWon == 7 ? p1Name : p2Name;
+            } else {
+                return null;
+            }
         }
     }
 }

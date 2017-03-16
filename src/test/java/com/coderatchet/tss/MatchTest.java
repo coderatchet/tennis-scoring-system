@@ -385,4 +385,83 @@ public class MatchTest {
         assertNull(match.getWinner());
     }
 
+    @Test
+    public void testTieBreakerWonWhenMoreThan6PointsAndAtLeast2MoreThanOtherP1(){
+
+        // 5 wins P1
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+
+        // 6 wins P2
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+
+        // 1 win P1 (tie-breaker)
+        simulateGameWinP1(match);
+        assertNull(match.getWinner());
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P2);
+        assertEquals("6-7", match.getSetScore());
+        assertEquals(P2, match.getWinner());
+    }
+
+    @Test
+    public void testTieBreakerWonWhenMoreThan6PointsAndAtLeast2MoreThanOtherP2(){
+
+        // 5 wins P1
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+
+        // 6 wins P2
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+
+        // 1 win P2 (tie-breaker)
+        simulateGameWinP2(match);
+        assertNull(match.getWinner());
+
+        // 6 points P1
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+
+        // 5 points p2
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+
+        // winning point P1
+        match.pointWonBy(P1);
+        assertEquals("7-6", match.getSetScore());
+        assertEquals(P1, match.getWinner());
+    }
 }
