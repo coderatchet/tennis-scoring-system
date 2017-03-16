@@ -222,7 +222,7 @@ public class MatchTest {
             }
             for (int j = 0; j < 6; j++) {
                 simulateGameWinP2(m);
-                assertEquals(String.format("%s-%s", i, j+1), m.getSetScore());
+                assertEquals(String.format("%s-%s", i, j + 1), m.getSetScore());
             }
         }
     }
@@ -295,7 +295,7 @@ public class MatchTest {
     }
 
     @Test
-    public void testTieRulesEntered(){
+    public void testTieRulesEntered() {
         for (int i = 0; i < 6; i++) {
             Match m = new Match(P1, P2);
             simulateGameWinP1(m);
@@ -316,9 +316,73 @@ public class MatchTest {
             }
             for (int j = 0; j < 6; j++) {
                 m.pointWonBy(P2);
-                assertEquals(String.format("%s-%s", i, j+1), m.getGameScore());
+                assertEquals(String.format("%s-%s", i, j + 1), m.getGameScore());
             }
         }
+    }
+
+    @Test
+    public void testTieBreakNotWonWithDifferenceLessThan2AndPointsMoreThan6P1() {
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP1(match);
+        assertNull(match.getWinner());
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P1);
+        assertEquals("7-6", match.getGameScore());
+        assertNull(match.getWinner());
+    }
+
+    @Test
+    public void testTieBreakNotWonWithDifferenceLessThan2AndPointsMoreThan6P2() {
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP1(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP2(match);
+        simulateGameWinP1(match);
+        assertNull(match.getWinner());
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P2);
+        assertEquals("6-7", match.getGameScore());
+        assertNull(match.getWinner());
     }
 
 }
