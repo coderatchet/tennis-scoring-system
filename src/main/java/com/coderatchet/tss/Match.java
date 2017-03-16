@@ -117,6 +117,8 @@ public class Match {
          * returns the printable score for the current game according to the scoring rules. empty for no points scored
          * yet.
          *
+         * At the beginning of the game, this method should return an empty string.
+         *
          * @return String
          */
         String getScore();
@@ -158,6 +160,8 @@ public class Match {
                     return "Advantage " + p2Name;
                 }
                 return "Deuce";
+            } else if (p1GamePoints == 0 && p2GamePoints == 0) {
+                return "";
             } else {
                 return String.format("%s-%s",
                         pointConversionMap.get(p1GamePoints),
@@ -190,6 +194,9 @@ public class Match {
 
         @Override
         public String getScore() {
+            if (p1GamePoints == 0 && p2GamePoints == 0) {
+                return "";
+            }
             return String.format("%s-%s", p1GamePoints, p2GamePoints);
         }
 

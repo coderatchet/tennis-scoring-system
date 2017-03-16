@@ -43,7 +43,7 @@ public class MatchTest {
 
     @Test
     public void testNewGameScoreIsCorrect() {
-        assertEquals("0-0", match.getGameScore());
+        assertEquals("", match.getGameScore());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class MatchTest {
         Map<ScoreSet, String> expectedScore = new TreeMap<>();
 
         // add map of points to expected output
-        expectedScore.put(new ScoreSet(0, 0), "0-0");
+        expectedScore.put(new ScoreSet(0, 0), "");
         expectedScore.put(new ScoreSet(0, 1), "0-15");
         expectedScore.put(new ScoreSet(0, 2), "0-30");
         expectedScore.put(new ScoreSet(0, 3), "0-40");
@@ -118,7 +118,7 @@ public class MatchTest {
         match.pointWonBy(P1);
         assertEquals(1, match.getP1GamesWon());
         assertEquals(0, match.getP2GamesWon());
-        assertEquals("0-0", match.getGameScore());
+        assertEquals("", match.getGameScore());
     }
 
     @Test
@@ -129,7 +129,7 @@ public class MatchTest {
         match.pointWonBy(P2);
         assertEquals(1, match.getP2GamesWon());
         assertEquals(0, match.getP1GamesWon());
-        assertEquals("0-0", match.getGameScore());
+        assertEquals("", match.getGameScore());
     }
 
     @Test
