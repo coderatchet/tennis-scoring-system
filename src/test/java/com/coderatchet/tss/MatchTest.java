@@ -471,10 +471,24 @@ public class MatchTest {
         assertEquals("0-0\n", outContent.toString());
     }
 
-//    @Test
-//    public void testCanPrintOverallScoreOnNewGameWithPoints() {
-//        match.pointWonBy(P1);
-//        match.score();
-//        assertEquals("0-0, 0-1", outContent.toString());
-//    }
+    @Test
+    public void testCanPrintOverallScoreOnNewGameWithPoints() {
+        match.pointWonBy(P1);
+        match.score();
+        assertEquals("0-0, 15-0\n", outContent.toString());
+
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        match.pointWonBy(P1);
+        outContent.reset();
+        match.score();
+        assertEquals("1-0\n", outContent.toString());
+
+        match.pointWonBy(P2);
+        match.pointWonBy(P2);
+        match.pointWonBy(P1);
+        outContent.reset();
+        match.score();
+        assertEquals("1-0, 15-30\n", outContent.toString());
+    }
 }
