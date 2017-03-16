@@ -22,6 +22,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <exec.mainClass>com.coderatchet.tss.Main</exec.mainClass>
     </properties>
 
     <dependencies>
