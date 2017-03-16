@@ -49,6 +49,11 @@ public class Match {
             } else {
                 p2GamesWon++;
             }
+            String winner = getWinner();
+            if (null != winner) {
+                System.out.println("Congratulations to " + winner + " for winning! Final score: " + getSetScore());
+                return;
+            }
             resetScore();
         }
 
@@ -64,7 +69,7 @@ public class Match {
         p2GamePoints = 0;
     }
 
-    public void score() {
+    void score() {
         System.out.println(getSetScore() + (p1GamePoints == 0 && p2GamePoints == 0 ? "" : ", ") + getGameScore());
     }
 

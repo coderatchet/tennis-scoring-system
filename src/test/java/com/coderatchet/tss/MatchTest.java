@@ -420,6 +420,7 @@ public class MatchTest {
         match.pointWonBy(P2);
         assertEquals("6-7", match.getSetScore());
         assertEquals(P2, match.getWinner());
+        assertEquals("Congratulations to " + P2 + " for winning! Final score: 6-7\n", outContent.toString());
     }
 
     @Test
@@ -463,6 +464,7 @@ public class MatchTest {
         match.pointWonBy(P1);
         assertEquals("7-6", match.getSetScore());
         assertEquals(P1, match.getWinner());
+        assertEquals("Congratulations to " + P1 + " for winning! Final score: 7-6\n", outContent.toString());
     }
 
     @Test
