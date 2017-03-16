@@ -269,6 +269,8 @@ public class MatchTest {
         simulateGameWinP1(match);
         simulateGameWinP1(match);
         assertNull(match.getWinner());
+        simulateGameWinP1(match);
+        assertEquals(P1, match.getWinner());
     }
 
 
@@ -289,6 +291,8 @@ public class MatchTest {
         simulateGameWinP2(match);
         simulateGameWinP2(match);
         assertNull(match.getWinner());
+        simulateGameWinP2(match);
+        assertEquals(P2, match.getWinner());
     }
 
 }
