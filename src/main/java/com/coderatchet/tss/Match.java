@@ -17,17 +17,12 @@ public class Match {
     private int p2GamesWon = 0;
     private int p1GamePoints = 0;
     private int p2GamePoints = 0;
-    private int currentGame = 1;
 
-    private Map<Integer, String> pointConversionMap = new TreeMap<>();
+    private GameRules currentGameRules = new NormalGameRules();
 
     public Match(String player1Name, String player2Name) {
         p1Name = player1Name;
         p2Name = player2Name;
-        pointConversionMap.put(0, "0");
-        pointConversionMap.put(1, "15");
-        pointConversionMap.put(2, "30");
-        pointConversionMap.put(3, "40");
     }
 
     /**
@@ -40,20 +35,27 @@ public class Match {
         // no null tests, correct content assumed
         if (playerName.equals(getP1Name())) {
             p1GamePoints++;
-
-            // winning means at least 4 points and difference of at least 2
-            if (p1GamePoints >= 4 && p1GamePoints - p2GamePoints >= 2) {
-                p1GamesWon++;
-                resetScore();
-            }
         } else if (playerName.equals(getP2Name())) {
             p2GamePoints++;
-            if (p2GamePoints >= 4 && p2GamePoints - p1GamePoints >= 2) {
-                p2GamesWon++;
-                resetScore();
-            }
         } else {
             throw new RuntimeException(String.format("Player '%s' does not exist.", playerName));
+        }
+
+        // winning means at least 4 points and difference of at least 2
+        String gameWinner = currentGameRules.getGameWinner();
+        if (null != gameWinner) {
+            if (p1Name.equals(gameWinner)) {
+                p1GamesWon++;
+            } else {
+                p2GamesWon++;
+            }
+            resetScore();
+        }
+
+        // enter a tie breaker if the match is 12 games in with no winner.
+        if (p1GamesWon == 6 && p2GamesWon == 6) {
+            // enter tiebreaker match
+            currentGameRules = new TieBreakerGameRules();
         }
     }
 
@@ -90,33 +92,93 @@ public class Match {
         return p2GamePoints;
     }
 
-    int getCurrentGame() {
-        return currentGame;
-    }
-
     String getGameScore() {
-        if (p1GamePoints >= 3 && p2GamePoints >= 3) {
-            if (p1GamePoints > p2GamePoints) {
-                return "Advantage " + p1Name;
-            } else if (p2GamePoints > p1GamePoints) {
-                return "Advantage " + p2Name;
-            }
-            return "Deuce";
-        } else {
-            return String.format("%s-%s",
-                    pointConversionMap.get(p1GamePoints),
-                    pointConversionMap.get(p2GamePoints));
-        }
+        return currentGameRules.getScore();
     }
 
     String getWinner() {
         if ((p1GamesWon >= 6 && p1GamesWon - p2GamesWon >= 2) ||
-                (p2GamesWon >= 6 && p2GamesWon - p1GamesWon >= 2)){
+                (p2GamesWon >= 6 && p2GamesWon - p1GamesWon >= 2)) {
             return p1GamesWon > p2GamesWon ? p1Name : p2Name;
         } else return null;
     }
 
     String getSetScore() {
         return String.format("%s-%s", getP1GamesWon(), getP2GamesWon());
+    }
+
+    private interface GameRules {
+
+        /**
+         * returns the winners name of the current game or null for no winner yet.
+         *
+         * @return null|String
+         */
+        String getGameWinner();
+
+        /**
+         * returns the printable score for the current game according to the scoring rules. empty for no points scored
+         * yet.
+         *
+         * @return String
+         */
+        String getScore();
+    }
+
+    /**
+     * not a tie breaker
+     */
+    private class NormalGameRules implements GameRules {
+
+        private Map<Integer, String> pointConversionMap = new TreeMap<>();
+
+        @Override
+        public String getGameWinner() {
+            if (p1GamePoints >= 4 && p1GamePoints - p2GamePoints >= 2) {
+                return p1Name;
+            } else if (p2GamePoints >= 4 && p2GamePoints - p1GamePoints >= 2) {
+                return p2Name;
+            } else return null;
+        }
+
+        @Override
+        public String getScore() {
+            pointConversionMap.put(0, "0");
+            pointConversionMap.put(1, "15");
+            pointConversionMap.put(2, "30");
+            pointConversionMap.put(3, "40");
+            if (p1GamePoints >= 3 && p2GamePoints >= 3) {
+                if (p1GamePoints > p2GamePoints) {
+                    return "Advantage " + p1Name;
+                } else if (p2GamePoints > p1GamePoints) {
+                    return "Advantage " + p2Name;
+                }
+                return "Deuce";
+            } else {
+                return String.format("%s-%s",
+                        pointConversionMap.get(p1GamePoints),
+                        pointConversionMap.get(p2GamePoints));
+            }
+        }
+    }
+
+    /**
+     * not a tie breaker
+     */
+    private class TieBreakerGameRules implements GameRules {
+
+        @Override
+        public String getGameWinner() {
+            if (p1GamePoints >= 7 && p1GamePoints - p2GamePoints >= 2) {
+                return p1Name;
+            } else if (p2GamePoints >= 7 && p2GamePoints - p1GamePoints >= 2) {
+                return p2Name;
+            } else return null;
+        }
+
+        @Override
+        public String getScore() {
+            return String.format("%s-%s", p1GamePoints, p2GamePoints);
+        }
     }
 }

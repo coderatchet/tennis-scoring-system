@@ -34,12 +34,11 @@ public class MatchTest {
         Match match = new Match("bob", "judy");
         assertEquals("bob", match.getP1Name());
         assertEquals("judy", match.getP2Name());
-        assertArrayEquals(new int[]{0, 0, 0, 0, 1}, new int[]{
+        assertArrayEquals(new int[]{0, 0, 0, 0}, new int[]{
                 match.getP1GamesWon(),
                 match.getP2GamesWon(),
                 match.getP1GamePoints(),
-                match.getP2GamePoints(),
-                match.getCurrentGame()});
+                match.getP2GamePoints()});
     }
 
     @Test
@@ -293,6 +292,33 @@ public class MatchTest {
         assertNull(match.getWinner());
         simulateGameWinP2(match);
         assertEquals(P2, match.getWinner());
+    }
+
+    @Test
+    public void testTieRulesEntered(){
+        for (int i = 0; i < 6; i++) {
+            Match m = new Match(P1, P2);
+            simulateGameWinP1(m);
+            simulateGameWinP1(m);
+            simulateGameWinP1(m);
+            simulateGameWinP1(m);
+            simulateGameWinP1(m);
+            simulateGameWinP2(m);
+            simulateGameWinP2(m);
+            simulateGameWinP2(m);
+            simulateGameWinP2(m);
+            simulateGameWinP2(m);
+            simulateGameWinP2(m);
+            simulateGameWinP1(m);
+            assertNull(m.getWinner());
+            for (int j = 0; j < i; j++) {
+                m.pointWonBy(P1);
+            }
+            for (int j = 0; j < 6; j++) {
+                m.pointWonBy(P2);
+                assertEquals(String.format("%s-%s", i, j+1), m.getGameScore());
+            }
+        }
     }
 
 }
